@@ -1,0 +1,120 @@
+<div class="container">
+  <div class="header">
+    <p class="subtitle">Busca y captura un Pokémon</p>
+  </div>
+
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="search eg. ditto or pikachu"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearchChange()">
+    <div *ngIf="suggestions.length > 0" class="suggestions">
+      <div *ngFor="let suggestion of suggestions"
+           class="suggestion-item"
+           (click)="selectPokemon(suggestion)">
+        <span class="suggestion-number">#{{ suggestion.id }}</span>
+        <span class="suggestion-name">{{ suggestion.name }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Buscando...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <mat-icon>error</mat-icon>
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="pokemonFound && !showCaptureForm" class="pokemon-preview">
+    <mat-card>
+      <div class="preview-content">
+        <div class="preview-info">
+          <div class="pokemon-number">#{{ pokemonFound.id.toString().padStart(3, '0') }}</div>
+          <h2>{{ pokemonFound.name }}</h2>
+          <div class="type-badges">
+                <span *ngFor="let type of pokemonFound.types"
+                      [class]="'type-badge type-' + type.toLowerCase()">
+                  {{ type }}
+                </span>
+          </div>
+          <div class="stats-preview">
+            <div class="stat">
+              <span class="stat-label">HP</span>
+              <span class="stat-value">{{ pokemonFound.hp }}</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Attack</span>
+              <span class="stat-value">{{ pokemonFound.attack }}</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Defense</span>
+              <span class="stat-value">{{ pokemonFound.defense }}</span>
+            </div>
+          </div>
+          <button mat-raised-button color="primary" (click)="showCaptureForm = true">
+            <mat-icon>catching_pokemon</mat-icon>
+            Capturar este Pokémon
+          </button>
+        </div>
+        <img [src]="pokemonFound.image" [alt]="pokemonFound.name" class="preview-image">
+      </div>
+    </mat-card>
+  </div>
+
+  <div *ngIf="showCaptureForm" class="capture-form">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Datos de Captura</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="captureForm">
+          <mat-form-field appearance="outline">
+            <mat-label>Lugar de captura</mat-label>
+            <input matInput formControlName="captureLocation" placeholder="Ej: Bosque Verde">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de Pokéball</mat-label>
+            <mat-select formControlName="pokeballType">
+              <mat-option value="Pokéball">Pokéball</mat-option>
+              <mat-option value="Superball">Superball</mat-option>
+              <mat-option value="Ultraball">Ultraball</mat-option>
+              <mat-option value="Masterball">Masterball</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Nivel</mat-label>
+            <input matInput type="number" formControlName="level" min="1" max="100">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Apodo (opcional)</mat-label>
+            <input matInput formControlName="nickname">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Notas (opcional)</mat-label>
+            <textarea matInput formControlName="description" rows="3"></textarea>
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button (click)="cancelCapture()">Cancelar</button>
+        <button mat-raised-button color="primary" (click)="capturePokemon()">
+          Guardar Captura
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="back-button">
+    <button mat-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Volver a la lista
+    </button>
+  </div>
+</div>

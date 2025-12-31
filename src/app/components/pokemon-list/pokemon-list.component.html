@@ -1,0 +1,63 @@
+<div class="container">
+  <div class="header">
+    <h1>Pokémon Trainer</h1>
+    <div class="trainer-info">
+      <div *ngIf="trainerName">
+        <h2>{{ trainerName }}</h2>
+      </div>
+      <div *ngIf="!trainerName">
+        <h2>No trainer</h2>
+      </div>
+      <div *ngIf="capturedPokemons">
+        <div *ngIf="capturedPokemons.length > 0">
+          <p class="count">Pokémon capturados: {{ capturedPokemons.length }}</p>
+        </div>
+        <div *ngIf="capturedPokemons.length === 0">
+          <p class="count">No has capturado ningún Pokémon</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="navigateToAdd()">
+      <mat-icon>add</mat-icon>
+      Capturar Pokémon
+    </button>
+  </div>
+
+  <div class="pokemon-grid">
+    <mat-card *ngFor="let pokemon of capturedPokemons" class="pokemon-card" (click)="viewPokemonDetails(pokemon)">
+      <div class="card-content">
+        <div class="card-left">
+          <div class="card-header">
+            <div class="type-badges">
+                  <span *ngFor="let type of pokemon.types"
+                        [class]="'type-badge type-' + type.toLowerCase()">
+                    {{ type }}
+                  </span>
+            </div>
+            <div class="pokemon-number">#{{ pokemon.pokemonId.toString().padStart(3, '0') }}</div>
+          </div>
+          <h2 class="pokemon-name">{{ pokemon.name }}</h2>
+          <div class="capture-info">
+            <p><strong>Capturado:</strong> {{ formatDate(pokemon.captureDate) }}</p>
+            <p *ngIf="pokemon.captureLocation"><strong>Lugar:</strong> {{ pokemon.captureLocation }}</p>
+            <p *ngIf="pokemon.pokeballType"><strong>Pokéball:</strong> {{ pokemon.pokeballType }}</p>
+            <p *ngIf="pokemon.level"><strong>Nivel:</strong> {{ pokemon.level }}</p>
+            <p *ngIf="pokemon.nickname" class="nickname"><strong>Apodo:</strong> {{ pokemon.nickname }}</p>
+          </div>
+        </div>
+        <div class="card-right">
+          <img [src]="pokemon.image" [alt]="pokemon.name">
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div *ngIf="capturedPokemons.length === 0" class="empty-state">
+    <mat-icon>catching_pokemon</mat-icon>
+    <h3>No tienes Pokémon capturados</h3>
+    <p>¡Comienza tu aventura capturando tu primer Pokémon!</p>
+  </div>
+</div>
