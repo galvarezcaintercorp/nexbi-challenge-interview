@@ -2,6 +2,7 @@ export interface CapturedPokemon {
   id: number;
   pokemonId: number;
   name: string;
+  types: string[];
   image: string;
   captureDate: Date;
   captureLocation: string;

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -6,6 +6,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
+import {CapturedPokemon} from "../../models/captured-pokemon.model";
+import {PersistenceService} from "../../services/persistence.service";
 
 @Component({
   selector: 'app-pokemon-list',
@@ -15,8 +17,10 @@ import { MatBadgeModule } from '@angular/material/badge';
   styleUrl: 'pokemon-list.component.scss'
 })
 export class PokemonListComponent implements OnInit {
-  trainerName: any = 'Ash Ketchum';
-  capturedPokemons: any = [];
+  trainerName = 'Ash Ketchum del focking pueblo Paleta';
+  capturedPokemonList: CapturedPokemon[] = [];
+
+  private readonly persistence = inject(PersistenceService)
 
   constructor(
     private http: HttpClient,
@@ -32,12 +36,7 @@ export class PokemonListComponent implements OnInit {
   }
 
   loadCapturedPokemons() {
-    const stored = localStorage.getItem('capturedPokemons');
-    if (stored) {
-      this.capturedPokemons = JSON.parse(stored);
-    } else {
-      this.capturedPokemons = [];
-    }
+    // TODO: Load captured pokemon list
   }
 
   navigateToAdd() {
@@ -53,9 +52,5 @@ export class PokemonListComponent implements OnInit {
       return date.toLocaleDateString();
     }
     return new Date(date).toLocaleDateString();
-  }
-
-  deletePokemon(id: any) {
-    // TODO: Implementar
   }
 }

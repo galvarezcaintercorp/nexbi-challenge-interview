@@ -1,0 +1,35 @@
+{
+  "formatter": {
+    "indentStyle": "space",
+    "lineWidth": 100,
+    "includes": [
+      "src/**/*.ts",
+      "test/**/*.ts",
+      "!**/*.min.ts"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "lineWidth": 120
+    }
+  },
+  "json": {
+    "formatter": {
+      "enabled": false
+    }
+  },
+  "files": {
+    "includes": [
+      "src/**/*.ts",
+      "test/**/*.ts",
+      "!**/*.min.ts"
+    ]
+  },
+  "linter": {
+    "includes": [
+      "**",
+      "!test/**"
+    ]
+  }
+}

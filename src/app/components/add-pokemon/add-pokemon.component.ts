@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import {PersistenceService} from "../../services/persistence.service";
 
 @Component({
   selector: 'app-add-pokemon',
@@ -36,6 +37,8 @@ export class AddPokemonComponent implements OnInit {
   captureForm: FormGroup;
   pokemonList: any[] = [];
   suggestions: any[] = [];
+
+  private readonly persistence = inject(PersistenceService)
 
   constructor(
     private http: HttpClient,
@@ -129,10 +132,7 @@ export class AddPokemonComponent implements OnInit {
       description: this.captureForm.value.description
     };
 
-    const stored = localStorage.getItem('capturedPokemons');
-    const pokemons = stored ? JSON.parse(stored) : [];
-    pokemons.push(capturedPokemon);
-    localStorage.setItem('capturedPokemons', JSON.stringify(pokemons));
+    // TODO: Save the selected pokemon
 
     this.router.navigate(['/']);
   }
